@@ -43,20 +43,14 @@ namespace IO.Swagger.Controllers
         /// </summary>
         /// <remarks>get all person in system</remarks>
         /// <response code="200">all persons taken</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="404">Not found</response>
-        /// <response code="500">Internal server error</response>
         [HttpGet]
         [Route("/api/v1/softomate/person")]
         [ValidateModelState]
         [SwaggerOperation("GetAllPersons")]
-        [SwaggerResponse(200, typeof(List<Person>), "all persons taken")]
-        [SwaggerResponse(400, typeof(ErrorMessage), "Bad request")]
-        [SwaggerResponse(404, typeof(ErrorMessage), "Not found")]
-        [SwaggerResponse(500, typeof(ErrorMessage), "Internal server error")]
+        [SwaggerResponse(200, typeof(List<Person>), "OK")]
         public virtual IActionResult GetAllPersons()
-        { 
-            return new ObjectResult(db.GetPersons());
+        {
+                return new ObjectResult(db.GetPersons());
         }
         
         /// <summary>
@@ -65,17 +59,27 @@ namespace IO.Swagger.Controllers
         /// <remarks>create new Person</remarks>
         /// <param name="person"></param>
         /// <response code="200">OK</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="404">Not found</response>
         /// <response code="409">Conflict</response>
-        /// <response code="500">Internal server error</response>
         [HttpPost]
         [Route("/api/v1/softomate/person")]
         [ValidateModelState]
         [SwaggerOperation("CreateNewPerson")]
-        public virtual void CreateNewPerson([FromBody]Person person)
-        { 
-             db.CreatePerson(person);
+        [SwaggerResponse(200, typeof(string), "OK")]
+        [SwaggerResponse(409, typeof(ErrorMessage), "Conflict")]
+        public virtual IActionResult CreateNewPerson([FromBody]Person person)
+        {
+
+            if (db.CreatePerson(person))
+            {
+                return new ObjectResult(true);
+            }
+            
+            Response.StatusCode = 409;
+            return new ObjectResult(new ErrorMessage()
+            {
+                Code = HttpStatusCode.Conflict.ToString(),
+                Message = "person alredy exists"
+            });
         }
 
         /// <summary>
@@ -84,20 +88,30 @@ namespace IO.Swagger.Controllers
         /// <remarks>get Person by id if exists or null otherwise</remarks>
         /// <param name="id"></param>
         /// <response code="200">ok</response>
-        /// <response code="400">Bad request</response>
         /// <response code="404">Not found</response>
-        /// <response code="500">Internal server error</response>
         [HttpGet]
         [Route("/api/v1/softomate/person/{id}")]
         [ValidateModelState]
         [SwaggerOperation("GetPersonById")]
-        [SwaggerResponse(200, typeof(Person), "ok")]
-        [SwaggerResponse(400, typeof(ErrorMessage), "Bad request")]
+        [SwaggerResponse(200, typeof(Person), "OK")]
         [SwaggerResponse(404, typeof(ErrorMessage), "Not found")]
-        [SwaggerResponse(500, typeof(ErrorMessage), "Internal server error")]
         public virtual IActionResult GetPersonById([FromRoute]string id)
         { 
-            return  new ObjectResult(db.GetPerson(id));
+            var person = db.GetPerson(id);
+            
+            if (null != person)
+            {
+                return new ObjectResult(person);
+            }
+            
+            Response.StatusCode = 404;
+            return new ObjectResult(
+                new ErrorMessage()
+                {
+                    Code = HttpStatusCode.NotFound.ToString(),
+                    Message = "no one person by this id fond"
+                }
+            );
         }
         
         /// <summary>
@@ -106,17 +120,28 @@ namespace IO.Swagger.Controllers
         /// <remarks>delete an Person</remarks>
         /// <param name="id"></param>
         /// <response code="200">OK</response>
-        /// <response code="400">Bad request</response>
         /// <response code="404">Not found</response>
-        /// <response code="409">Conflict</response>
-        /// <response code="500">Internal server error</response>
         [HttpDelete]
         [Route("/api/v1/softomate/person/{id}")]
         [ValidateModelState]
         [SwaggerOperation("DeletePerson")]
-        public virtual void DeletePerson([FromRoute]string id)
+        [SwaggerResponse(200, typeof(string), "OK")]
+        [SwaggerResponse(404, typeof(ErrorMessage), "Not found")]
+        public virtual IActionResult DeletePerson([FromRoute]string id)
         {
-            db.DeletePerson(id);
+            if (db.DeletePerson(id))
+            {
+                return new ObjectResult(true);
+            }
+            Response.StatusCode = 404;
+            return new ObjectResult(
+                new ErrorMessage()
+                {
+                    Code = HttpStatusCode.NotFound.ToString(),
+                    Message = "nothing to delete"
+                }
+            );
+
         }
 
         /// <summary>
@@ -125,17 +150,27 @@ namespace IO.Swagger.Controllers
         /// <remarks>update an Person record</remarks>
         /// <param name="person"></param>
         /// <response code="200">OK</response>
-        /// <response code="400">Bad request</response>
         /// <response code="404">Not found</response>
-        /// <response code="409">Conflict</response>
-        /// <response code="500">Internal server error</response>
         [HttpPut]
         [Route("/api/v1/softomate/person")]
         [ValidateModelState]
         [SwaggerOperation("UpdatePerson")]
-        public virtual void UpdatePerson([FromBody]Person person)
+        [SwaggerResponse(200, typeof(string), "OK")]
+        [SwaggerResponse(404, typeof(ErrorMessage), "Not found")]
+        public virtual IActionResult UpdatePerson([FromBody]Person person)
         {
-            db.UpdatePerson(person);
+            if (db.UpdatePerson(person))
+            {
+                return new ObjectResult(true);
+            }
+            Response.StatusCode = 404;
+            return new ObjectResult(
+                new ErrorMessage()
+                {
+                    Code = HttpStatusCode.NotFound.ToString(),
+                    Message = "nothing to update by this id"
+                }
+            );
         }
     }
 }
