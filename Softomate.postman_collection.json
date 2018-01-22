@@ -1,0 +1,148 @@
+{
+	"info": {
+		"name": "Softomate",
+		"_postman_id": "edbf4c4f-0d01-cc6d-5461-ba234d9a4f16",
+		"description": "collection REST request for check endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "getAllPersons",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/softomate/person",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"softomate",
+						"person"
+					]
+				},
+				"description": "get collection of Person objecs"
+			},
+			"response": []
+		},
+		{
+			"name": "readPerson",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/softomate/person/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"softomate",
+						"person",
+						"5"
+					]
+				},
+				"description": "get collection of Person objecs"
+			},
+			"response": []
+		},
+		{
+			"name": "createPerson",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":\"1\",\n\t\"firstName\":\"Roman\",\n\t\"lastName\":\"Kiselev\",\n\t\"birthDate\":\"10.08.1979\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/softomate/person",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"softomate",
+						"person"
+					]
+				},
+				"description": "get collection of Person objecs"
+			},
+			"response": []
+		},
+		{
+			"name": "updatePerson",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": \"1\",\n\t\"firstName\": \"Roman\",\n\t\"lastName\": \"Kiselev Tavricheskiy\",\n\t\"birthDate\": \"10.08.1979\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/softomate/person",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"softomate",
+						"person"
+					]
+				},
+				"description": "get collection of Person objecs"
+			},
+			"response": []
+		},
+		{
+			"name": "deletePerson",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/softomate/person/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"softomate",
+						"person",
+						"5"
+					]
+				},
+				"description": "delete an Person object by id"
+			},
+			"response": []
+		}
+	]
+}
