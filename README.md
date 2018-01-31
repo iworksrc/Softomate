@@ -18,6 +18,7 @@
  2. ```cd Softomate```
  3. ```dotnet restore```
  4. ```dotnet run```
+
 [инструкции установки .Net Core в linux](https://www.microsoft.com/net/download/linux)
 
 #### Windows
